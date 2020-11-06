@@ -1,26 +1,38 @@
 import React from "react"
 import { Route } from "react-router-dom"
-import { GameList } from "./game/GameList"
-import { GameProvider } from "./game/GameProvider"
-import { EventProvider } from "./game/EventProvider"
+import { ProfileProvider } from "./auth/AuthProvider.js"
+import { Profile } from "./auth/Profile.js"
 import { EventList } from "./game/EventList"
+import { EventProvider } from "./game/EventProvider.js"
+import { GameForm } from "./game/GameForm.js"
+import { GameList } from "./game/GameList.js"
+import { GameProvider } from "./game/GameProvider.js"
 
 export const ApplicationViews = () => {
     return <>
         <main style={{
             margin: "5rem 2rem",
-            backgroundColor: "lightgoldenrodyellow"
+            lineHeight: "1.75rem"
         }}>
             <GameProvider>
-                <Route exact path="/games">
-                    <GameList />
+                <Route exact path="/games/new">
+                    <GameForm />
                 </Route>
             </GameProvider>
-            <EventProvider>
-                <Route exact path="/events">
-                    <EventList />
-                </Route>
-            </EventProvider>
+            <ProfileProvider>
+                <GameProvider>
+                    <EventProvider>
+                        <Route exact path="/" render={props => <GameList {...props} />} />
+
+                        <Route exact path="/profile">
+                            <Profile />
+                        </Route>
+                        <Route exact path="/events">
+                            <EventList />
+                        </Route>
+                    </EventProvider>
+                </GameProvider>
+            </ProfileProvider>
         </main>
     </>
 }
